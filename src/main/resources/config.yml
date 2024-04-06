@@ -1,0 +1,20 @@
+database:
+  host: "db_host"
+  port: "db_port"
+  username: "db_username"
+  password: "db_password"
+  database: "db_name"
+
+messages:
+  prefix: "&8[&6&lExamplePlugin&8] &7"
+  no-permission: "&cYou don't have permission to execute this command"
+  success: "&8You have successfully set the link"
+  consoleError: "&cYou can't execute this command from console"
+  Error: "&cAn error occurred while executing the command. Please contact an administrator"
+  noLink: "&cYou haven't set the link yet"
+  livemessage:
+    - "&8&l---------------------------------\n"
+    - "&5%player% &7is going live\n"
+    - "&8follow the live stream at\n"
+    - "&6%link%\n"
+    - "&8&l---------------------------------\n"

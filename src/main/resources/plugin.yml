@@ -1,0 +1,16 @@
+name: SimpleGoLive
+version: 1.0
+main: it.kyabori.simplegolive.Main
+author: Kyabori
+description: A simple plugin to share your live stream link in the global chat
+
+commands:
+  setlink:
+    description: Set the link to the live stream
+    usage: /setlink <link>
+    permission: simplegolive.setlink
+
+  golive:
+    description: Go live and share the link in the global chat
+    usage: /golive
+    permission: simplegolive.golive

@@ -1,17 +1,38 @@
 package it.kyabori;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+import lombok.Getter;
+import org.bukkit.plugin.java.JavaPlugin;
+import it.kyabori.commands.golive;
+import it.kyabori.commands.setlink;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+import java.util.Objects;
+
+public class Main extends JavaPlugin {
+    @Getter
+    static Main instance;
+
+    @Override
+    public void onEnable() {
+        instance = this;
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
+        try {
+            Database database = new Database();
+            database.initializeDatabase();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        Objects.requireNonNull(getCommand("setlink")).setExecutor(new setlink());
+        Objects.requireNonNull(getCommand("golive")).setExecutor(new golive());
+    }
+
+    @Override
+    public void onDisable() {
+        instance = null;
+    }
+
+    public static String getMsg(String key) {
+        String s = Main.getInstance().getConfig().getString("messages." + key);
+        return s;
     }
 }
