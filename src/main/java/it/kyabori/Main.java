@@ -1,9 +1,12 @@
 package it.kyabori;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import it.kyabori.commands.golive;
 import it.kyabori.commands.setlink;
+import it.kyabori.Database;
 
 import java.util.Objects;
 
@@ -16,14 +19,9 @@ public class Main extends JavaPlugin {
         instance = this;
         getConfig().options().copyDefaults();
         saveDefaultConfig();
-        try {
-            Database database = new Database();
-            database.initializeDatabase();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         Objects.requireNonNull(getCommand("setlink")).setExecutor(new setlink());
         Objects.requireNonNull(getCommand("golive")).setExecutor(new golive());
+        getLogger().info(Main.getMsg(ChatColor.GREEN + "SimpleGoLive enabled!"));
     }
 
     @Override
@@ -32,7 +30,7 @@ public class Main extends JavaPlugin {
     }
 
     public static String getMsg(String key) {
-        String s = Main.getInstance().getConfig().getString("messages." + key);
+        String s = Objects.requireNonNull(Main.getInstance().getConfig().getString("messages." + key)).replaceAll("&", "§");
         return s;
     }
 }

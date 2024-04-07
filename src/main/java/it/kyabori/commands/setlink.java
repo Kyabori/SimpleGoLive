@@ -11,7 +11,7 @@ public class setlink implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] link) {
         if (commandSender instanceof Player) {
-            String prefix = Main.getMsg("prefix").replaceAll("&", "§");
+            String prefix = Main.getMsg("prefix");
             Player player = (Player) commandSender;
             if (player.hasPermission("simplegolive.setlink")) {
                 if (link.length == 1) {
@@ -19,18 +19,18 @@ public class setlink implements CommandExecutor {
                     try {
                         Database database = new Database();
                         database.setLink(player.getName(), link[0]);
-                        String msg = Main.getMsg("success").replaceAll("&", "§");
+                        String msg = Main.getMsg("success");
                         player.sendMessage(prefix + msg);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        String msg = Main.getMsg("Error").replaceAll("&", "§");
+                        String msg = Main.getMsg("Error");
                         player.sendMessage(prefix + msg);
                     }
                 } else {
-                    player.sendMessage("Usage: /setlink <link>");
+                    player.sendMessage(prefix + Main.getMsg("usage"));
                 }
             } else {
-                String msg = Main.getMsg("ConsoleError").replaceAll("&", "§");
+                String msg = Main.getMsg("ConsoleError");
                 commandSender.sendMessage(msg);
             }
             return true;

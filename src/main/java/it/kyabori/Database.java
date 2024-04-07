@@ -11,6 +11,9 @@ public class Database {
         if(connection != null){
             return connection;
         }
+        if (Main.getInstance().getConfig().getString("database.host").equalsIgnoreCase("db_host")) {
+            return null;
+        }
 
         //Try to connect to my MySQL database running locally
         //complete string example: "jdbc:mysql://host/db_name
@@ -31,7 +34,7 @@ public class Database {
 
         Statement statement = getConnection().createStatement();
         //Create the link table if it doesn't exist
-        statement.execute("CREATE TABLE IF NOT EXISTS link (username varchar(16) primary key, link varchar(255))");
+        statement.execute("CREATE TABLE IF NOT EXISTS golive_link (username varchar(16) primary key, link varchar(255))");
         statement.close();
     }
 
