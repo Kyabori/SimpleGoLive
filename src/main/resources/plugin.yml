@@ -14,3 +14,8 @@ commands:
     description: Go live and share the link in the global chat
     usage: /golive
     permission: simplegolive.golive
+
+  golivereload:
+    description: Reload the configuration
+    usage: /golivereload
+    permission: simplegolive.reload

@@ -13,7 +13,7 @@ public class golive implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
-            String prefix = Main.getMsg("prefix");
+            String prefix = Main.getMsg("prefix").replaceAll("&", "§");
             if (player.hasPermission("simplegolive.golive")) {
                 try {
                     Database database = new Database();
@@ -26,17 +26,17 @@ public class golive implements CommandExecutor {
                             Main.getInstance().getServer().broadcastMessage(string);
                         }
                     } else {
-                        String msg = Main.getMsg("noLink");
+                        String msg = Main.getMsg("noLink").replaceAll("&", "§");
                         player.sendMessage(prefix + msg);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    String msg = Main.getMsg("Error");
+                    String msg = Main.getMsg("Error").replaceAll("&", "§");
                     player.sendMessage(prefix + msg);
                 }
                 return true;
             } else {
-                String msg = Main.getMsg("ConsoleError");
+                String msg = Main.getMsg("ConsoleError").replaceAll("&", "§");
                 commandSender.sendMessage(prefix + msg);
                 return true;
             }

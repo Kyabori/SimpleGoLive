@@ -11,9 +11,6 @@ public class Database {
         if(connection != null){
             return connection;
         }
-        if (Main.getInstance().getConfig().getString("database.host").equalsIgnoreCase("db_host")) {
-            return null;
-        }
 
         //Try to connect to my MySQL database running locally
         //complete string example: "jdbc:mysql://host/db_name
@@ -40,12 +37,12 @@ public class Database {
 
     public void setLink (String playerName, String link) throws SQLException {
         //check if the player already has a link
-        PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM link WHERE username = ?");
+        PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM golive_link WHERE username = ?");
         statement.setString(1, playerName);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
             //update the link
-            statement = getConnection().prepareStatement("UPDATE link SET link = ? WHERE username = ?");
+            statement = getConnection().prepareStatement("UPDATE golive_link SET link = ? WHERE username = ?");
             statement.setString(1, link);
             statement.setString(2, playerName);
             statement.executeUpdate();
@@ -53,7 +50,7 @@ public class Database {
             statement.close();
         } else {
             //insert the link
-            statement = getConnection().prepareStatement("INSERT INTO link (username, link) VALUES (?, ?)");
+            statement = getConnection().prepareStatement("INSERT INTO golive_link (username, link) VALUES (?, ?)");
             statement.setString(1, playerName);
             statement.setString(2, link);
             statement.executeUpdate();
@@ -64,7 +61,7 @@ public class Database {
 
     public String getLink (String playerName) throws SQLException {
         //get the link of the player
-        PreparedStatement statement = getConnection().prepareStatement("SELECT link FROM link WHERE username = ?");
+        PreparedStatement statement = getConnection().prepareStatement("SELECT link FROM golive_link WHERE username = ?");
         statement.setString(1, playerName);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
