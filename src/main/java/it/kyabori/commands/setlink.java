@@ -9,25 +9,29 @@ import it.kyabori.Main;
 
 public class setlink implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] link) {
         if (commandSender instanceof Player) {
+            String prefix = Main.getMsg("prefix").replaceAll("&", "§");
             Player player = (Player) commandSender;
             if (player.hasPermission("simplegolive.setlink")) {
-                if (strings.length == 1) {
-                    //save in database
+                if (link.length == 1) {
+                    //try to save the link in the database or update it if it already exists
                     try {
                         Database database = new Database();
-                        database.setLink(player.getName(), strings[0]);
-                        player.sendMessage(Main.getMsg("Success"));
+                        database.setLink(player.getName(), link[0]);
+                        String msg = Main.getMsg("success").replaceAll("&", "§");
+                        player.sendMessage(prefix + msg);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        player.sendMessage(Main.getMsg("Error"));
+                        String msg = Main.getMsg("Error").replaceAll("&", "§");
+                        player.sendMessage(prefix + msg);
                     }
                 } else {
                     player.sendMessage("Usage: /setlink <link>");
                 }
             } else {
-                commandSender.sendMessage(Main.getMsg("ConsoleError"));
+                String msg = Main.getMsg("ConsoleError").replaceAll("&", "§");
+                commandSender.sendMessage(msg);
             }
             return true;
         }

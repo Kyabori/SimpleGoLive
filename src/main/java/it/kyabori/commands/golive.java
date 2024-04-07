@@ -1,5 +1,6 @@
 package it.kyabori.commands;
 
+import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,23 +13,33 @@ public class golive implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
-            //send the player's link to the global chat
+            String prefix = Main.getMsg("prefix").replaceAll("&", "§");
             if (player.hasPermission("simplegolive.golive")) {
                 try {
                     Database database = new Database();
                     String link = database.getLink(player.getName());
                     if (link != null) {
-                        player.sendMessage(Main.getMsg("livemessage").replace("%link%", link));
+                        //send a broadcast message with the player's link with a String list
+                        List<String> msg = Main.getInstance().getConfig().getStringList("messages.golive");
+                        for (String string : msg) {
+                            string = string.replaceAll("%player%", player.getName());
+                            string = string.replaceAll("%link%", link);
+                            string = string.replaceAll("&", "§");
+                            Main.getInstance().getServer().broadcastMessage(string);
+                        }
                     } else {
-                        player.sendMessage(Main.getMsg("noLink"));
+                        String msg = Main.getMsg("noLink").replaceAll("&", "§");
+                        player.sendMessage(prefix + msg);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    player.sendMessage(Main.getMsg("Error"));
+                    String msg = Main.getMsg("Error").replaceAll("&", "§");
+                    player.sendMessage(prefix + msg);
                 }
                 return true;
             } else {
-                commandSender.sendMessage(Main.getMsg("ConsoleError"));
+                String msg = Main.getMsg("ConsoleError").replaceAll("&", "§");
+                commandSender.sendMessage(prefix + msg);
                 return true;
             }
         }

@@ -1,6 +1,6 @@
 name: SimpleGoLive
 version: 1.0
-main: it.kyabori.simplegolive.Main
+main: it.kyabori.Main
 author: Kyabori
 description: A simple plugin to share your live stream link in the global chat
 

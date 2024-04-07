@@ -19,24 +19,18 @@ public class Database {
         String port = Main.getInstance().getConfig().getString("database.port");
         String database = Main.getInstance().getConfig().getString("database.database");
         String url = urlStart + host + ":" + port + "/" + database;
-        String user = Main.getInstance().getConfig().getString("database.user");
+        String user = Main.getInstance().getConfig().getString("database.username");
         String password = Main.getInstance().getConfig().getString("database.password");
-
         Connection connection = DriverManager.getConnection(url, user, password);
 
         this.connection = connection;
-
-        System.out.println("Connected to database.");
-
         return connection;
     }
 
     public void initializeDatabase() throws SQLException {
 
         Statement statement = getConnection().createStatement();
-
-        //Create the player_stats table
-        statement.execute("CREATE DATABASE IF NOT EXISTS 'EasyGoLive'");
+        //Create the link table if it doesn't exist
         statement.execute("CREATE TABLE IF NOT EXISTS link (username varchar(16) primary key, link varchar(255))");
         statement.close();
     }
@@ -66,7 +60,8 @@ public class Database {
     }
 
     public String getLink (String playerName) throws SQLException {
-        PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM link WHERE username = ?");
+        //get the link of the player
+        PreparedStatement statement = getConnection().prepareStatement("SELECT link FROM link WHERE username = ?");
         statement.setString(1, playerName);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
