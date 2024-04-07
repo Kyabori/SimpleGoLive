@@ -1,6 +1,11 @@
 package it.kyabori.commands;
 
 import java.util.List;
+
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,9 +26,14 @@ public class golive implements CommandExecutor {
                     if (link != null) {
                         //send a broadcast message with the player's link with a String list
                         List<String> msg = Main.getInstance().getConfig().getStringList("messages.golive");
-                        for (String string : msg) {
-                            string = string.replaceAll("%player%", player.getName()).replaceAll("%link%", link).replaceAll("&", "§");
-                            Main.getInstance().getServer().broadcastMessage(string);
+                        for (String message : msg) {
+                            message = message.replaceAll("%player%", player.getName());
+                            message = message.replaceAll("%link%", link);
+                            message = message.replaceAll("&", "§");
+                            TextComponent messageComponent = new TextComponent(message);
+                            messageComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link));
+                            Server server = Main.getInstance().getServer();
+                            server.spigot().broadcast(messageComponent);
                         }
                     } else {
                         String msg = Main.getMsg("noLink").replaceAll("&", "§");
